@@ -1,5 +1,13 @@
 const path = require('path');
 
+console.log(1111);
+
+class aa {
+  constructor(options) {
+    console.log(options);
+  }
+};
+
 module.exports = {
   mode: 'production',
   entry: './src/main.js',
@@ -17,6 +25,7 @@ module.exports = {
   },
   // 插件
   plugins: [
+    // new aa(),
     // new HtmlWebpackPlugin({template: './src/index.html'})
   ]
 };
