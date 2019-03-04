@@ -59,7 +59,7 @@
 
 vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Launch Webpack` 调试 webpack
 
-全局配置对每个项目都起效
+全局配置对每个项目都起效，但仍然建议使用项目内模式，配置更加灵活
 
 ```js
 // setting.json
@@ -70,6 +70,12 @@ vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Laun
       "request": "launch",
       "name": "Launch Webpack",
       "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js"
+      // "args": [
+      //   默认为 `./webpack.config.js`
+      //   "--config", "./webpack.config.js"
+      // ],
+      "env" : { "NODE_ENV" : "production" },
+      // "envFile": "${workspaceFolder}/xxx.env",
     }]
   },
 
