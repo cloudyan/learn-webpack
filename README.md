@@ -91,3 +91,4 @@ vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Laun
 
 - https://www.webpackjs.com/concepts/
 - https://github.com/ruanyf/webpack-demos
+- https://github.com/Microsoft/vscode-recipes
