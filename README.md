@@ -51,7 +51,11 @@
   },
 ```
 
-参考：https://github.com/jerryni/blog/issues/32
+参考：
+
+- https://github.com/jerryni/blog/issues/32
+- https://stackoverflow.com/questions/47199993/debug-node-js-code-in-vs-code-bundled-with-webpack/47907413#47907413
+
 
 ### 方法二
 
