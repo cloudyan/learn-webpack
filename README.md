@@ -59,6 +59,8 @@
 
 vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Launch Webpack` 调试 webpack
 
+全局配置对每个项目都起效
+
 ```js
 // setting.json
   "launch": {
