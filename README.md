@@ -14,7 +14,7 @@
 
 使用当前项目添加 `.vscode/launch.json` 以下配置，添加断点调用 `debug webpack` 调试 webpack
 
-```json
+```js
 {
   // 使用 IntelliSense 了解相关属性。
   // 悬停以查看现有属性的描述。
@@ -52,7 +52,7 @@
 
 vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Launch Webpack` 调试 webpack
 
-```json
+```js
   "launch": {
     // https://medium.com/@jsilvax/debugging-webpack-with-vs-code-b14694db4f8e
     "configurations": [{
