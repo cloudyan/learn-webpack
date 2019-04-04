@@ -1,12 +1,9 @@
 const path = require('path');
-
-console.log(1111);
-
-class aa {
-  constructor(options) {
-    console.log(options);
-  }
-};
+const HelloWorldPlugin = require('./plugins/HellowWorld');
+const MyExampleWebpackPlugin = require('./plugins/MyExampleWebpackPlugin');
+const HelloCompilationPlugin = require('./plugins/HelloCompilationPlugin');
+const HelloAsyncPlugin = require('./plugins/HelloAsyncPlugin');
+const MyPlugin1 = require('./plugins/plugin-1');
 
 module.exports = {
   mode: 'production',
@@ -26,7 +23,11 @@ module.exports = {
   },
   // 插件
   plugins: [
-    // new aa(),
+    new HelloWorldPlugin({ options: true }),
+    // new MyExampleWebpackPlugin(),
+    // new HelloCompilationPlugin(),
+    // new HelloAsyncPlugin(),
+    // new MyPlugin1(),
     // new HtmlWebpackPlugin({template: './src/index.html'})
   ]
 };

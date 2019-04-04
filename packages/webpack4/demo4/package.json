@@ -1,0 +1,21 @@
+{
+  "name": "@xmini/webpack4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "debug": "webpack-dev-server --host 0.0.0.0 --config ./webpack.config.js",
+    "start": "webpack-dev-server --host 0.0.0.0 --config ./webpack.config.js",
+    "dev": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^4.29.6"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
