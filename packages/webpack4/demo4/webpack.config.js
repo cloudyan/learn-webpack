@@ -1,6 +1,6 @@
 const path = require('path');
 
-console.log(1111);
+const HelloWorldPlugin = require('./plugins/HelloWorldPlugin');
 
 class aa {
   constructor(options) {
@@ -26,7 +26,7 @@ module.exports = {
   },
   // 插件
   plugins: [
-    // new aa(),
+    new HelloWorldPlugin({ options: true }),
     // new HtmlWebpackPlugin({template: './src/index.html'})
   ]
 };
