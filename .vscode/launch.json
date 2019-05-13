@@ -29,7 +29,7 @@
       "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
       "args": [
         // 默认为 `./webpack.config.js`
-        "--config", "./packages/webpack4/demo2/webpack.config.js"
+        "--config", "./packages/vscode-debug/demo2/webpack.config.js"
       ],
       "env" : { "NODE_ENV" : "production" },
       // "envFile": "${workspaceFolder}/xxx.env",
@@ -41,7 +41,7 @@
       "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
       "args": [
         // 默认为 `./webpack.config.js`
-        "--config", "./packages/webpack4/demo3/webpack.config.js"
+        "--config", "./packages/vscode-debug/demo3/webpack.config.js"
       ],
       "env" : { "NODE_ENV" : "production" },
       // "envFile": "${workspaceFolder}/xxx.env",
@@ -54,7 +54,7 @@
       "args": [
         // 默认为 `./webpack.config.js`
         "--host", "0.0.0.0",
-        "--config", "./packages/webpack4/demo4/webpack.config.js"
+        "--config", "./packages/vscode-debug/demo4/webpack.config.js"
       ],
       "env" : { "NODE_ENV" : "production" },
       // "envFile": "${workspaceFolder}/xxx.env",
