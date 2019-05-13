@@ -2,15 +2,15 @@
 
 学习 webpack4
 
-- 配置使用，关键配置，如何配置，如何优化
+- config-usage 配置使用，关键配置，如何配置，如何优化
   - demo1
-- 插件开发
-  - 如何调试
-  - 实现什么功能
-    - 转码（如es6 转 es5，多态支持）
-    - 输出
-    - vue code 转小程序code
-- 源码学习
+- output-analysis 输出代码分析
+- vscode-debug 如何调试
+- plugins 插件开发，实现什么功能
+  - 转码（如es6 转 es5，多态支持）
+  - 输出
+  - vue code 转小程序code
+- src 源码学习
   - tabable
 
 ## vscode 调试 webpack
