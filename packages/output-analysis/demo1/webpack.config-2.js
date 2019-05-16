@@ -1,9 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  entry: './index.js',
+  entry: './src-2/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist-2'),
     filename: '[name].[chunkhash].js',
   },
   mode: 'development',

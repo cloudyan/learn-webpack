@@ -1,11 +1,57 @@
 {
   "name": "root",
   "private": true,
-  "devDependencies": {
-    "lerna": "^3.10.5",
-    "webpack": "^4.29.4",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1"
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.3.1"
   },
-  "dependencies": {}
+  "jest": {
+    "verbose": true,
+    "notify": true,
+    "collectCoverage": true,
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/helper-module-imports": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-classes": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/plugin-transform-template-literals": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.8.0",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-plugin-istanbul": "^5.1.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-preset-jest": "^24.6.0",
+    "benchmark": "^2.1.4",
+    "conventional-changelog": "3.1.8",
+    "eslint": "^5.16.0",
+    "eslint-config-essentials": "^1.1.1",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-prettier": "^3.1.0",
+    "fs-extra": "^8.0.1",
+    "jest": "^24.8.0",
+    "rimraf": "^2.6.3",
+    "@vue/conventional-changelog": "^0.1.1",
+    "chalk": "^2.4.2",
+    "lerna": "^3.13.4",
+    "lint-staged": "^8.1.6",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.17.1",
+    "yorkie": "^2.0.0"
+  }
 }
