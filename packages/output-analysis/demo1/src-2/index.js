@@ -1,4 +1,8 @@
 // index.js
 
 import { log } from './util';
-log('abc');
+log('log in entry');
+
+require.ensure(['./runtime.js'], function() {
+  console.log('ensured');
+});
