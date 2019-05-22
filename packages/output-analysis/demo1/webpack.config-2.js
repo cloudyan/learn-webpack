@@ -1,4 +1,5 @@
 const path = require('path');
+const MyPlugin = require('./plugins/MyPlugin');
 
 module.exports = {
   entry: './src-2/index.js',
@@ -8,4 +9,5 @@ module.exports = {
   },
   mode: 'development',
   devtool: 'cheap-source-map',
+  plugins: [new MyPlugin()],
 };
