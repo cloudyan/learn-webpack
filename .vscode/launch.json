@@ -39,8 +39,10 @@
       "request": "launch",
       "name": "debug demo3",
       "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
+      // "program": "${workspaceFolder}/node_modules/webpack-dev-server/bin/webpack-dev-server.js",
       "args": [
         // 默认为 `./webpack.config.js`
+        // "--host", "0.0.0.0",
         "--config", "./packages/vscode-debug/demo3/webpack.config.js"
       ],
       "env" : { "NODE_ENV" : "production" },

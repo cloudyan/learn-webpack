@@ -1,9 +1,9 @@
 const path = require('path');
-const HelloWorldPlugin = require('./plugins/HellowWorld');
-const MyExampleWebpackPlugin = require('./plugins/MyExampleWebpackPlugin');
-const HelloCompilationPlugin = require('./plugins/HelloCompilationPlugin');
-const HelloAsyncPlugin = require('./plugins/HelloAsyncPlugin');
-const MyPlugin1 = require('./plugins/plugin-1');
+const HelloWorldPlugin = require('./plugins/HelloWorldPlugin');
+// const MyExampleWebpackPlugin = require('./plugins/MyExampleWebpackPlugin');
+// const HelloCompilationPlugin = require('./plugins/HelloCompilationPlugin');
+// const HelloAsyncPlugin = require('./plugins/HelloAsyncPlugin');
+// const MyPlugin1 = require('./plugins/plugin-1');
 
 module.exports = {
   mode: 'production',
@@ -13,13 +13,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'static/js/[name].[contenthash:8].js',
     publicPath: 'https://img1.haoshiqi.net/',
-    chunkFilename: 'static/js/[name].[contenthash:8].js'
+    chunkFilename: 'static/js/[name].[contenthash:8].js',
   },
   // loader
   module: {
-    rules: [
-      { test: /\.txt$/, use: 'raw-loader' }
-    ]
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
   },
   // 插件
   plugins: [
@@ -29,5 +27,5 @@ module.exports = {
     // new HelloAsyncPlugin(),
     // new MyPlugin1(),
     // new HtmlWebpackPlugin({template: './src/index.html'})
-  ]
+  ],
 };
