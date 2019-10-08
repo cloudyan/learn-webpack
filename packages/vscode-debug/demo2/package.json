@@ -1,5 +1,5 @@
 {
-  "name": "@xmini/webpack4",
+  "name": "@xmini/webpack4-demo2",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,9 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "webpack": "^4.31.0"
+    "webpack": "^4.41.0"
   },
   "devDependencies": {
-    "webpack-cli": "^3.3.2"
+    "webpack-cli": "^3.3.9"
   }
 }

@@ -6,6 +6,9 @@ class HelloWorldPlugin {
   }
 
   apply(compiler) {
+    console.log(compiler);
+    debugger;
+
     compiler.hooks.done.tap('HelloWorldPlugin', stats => {
       // stats is passed as argument when done hook is tapped.
       console.log('Hello World!');
