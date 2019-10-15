@@ -17,15 +17,15 @@
       installedChunks[chunkId] = 0;
     }
     // 6.2 copy moreModules 到 modules
-    // 同步加载模块
+    // 挨个将异步chunk中的module加入主chunk的modules数组中
     for(moduleId in moreModules) {
       if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
         modules[moduleId] = moreModules[moduleId];
       }
     }
 
-    // parentJsonpFunction 是 window["webpackJsonp"] 的原生 push
-    // 将 data 加入全局数组，缓存 chunk 内容
+    // parentJsonpFunction: 原始的数组push方法，将data加入window["webpackJsonp"]数组缓存
+    // 因为动态 chunk 的 push 方法即webpackJsonpCallback，并没有做 push 数组操作
     if(parentJsonpFunction) parentJsonpFunction(data);
 
     // 执行 resolve 后，加载 chunk 的 promise 状态变为 resolved，then 内的函数开始执行，完成异步加载
@@ -128,7 +128,7 @@
           // 处理 script 加载完成，但 chunk 没有加载完成的情况
           if(chunk !== 0) {
 
-            // chunk 加载中
+            // chunk 加载中，此时chunk为[resolve, reject, promise]表示还没有加载好
             if(chunk) {
               var errorType = event && (event.type === 'load' ? 'missing' : event.type);
               var realSrc = event && event.target && event.target.src;
@@ -146,7 +146,7 @@
           }
         };
 
-        // 设置 120 秒超时时间
+        // 模拟请求超时 设置 120 秒超时时间
         var timeout = setTimeout(function(){
           onScriptComplete({ type: 'timeout', target: script });
         }, 120000);

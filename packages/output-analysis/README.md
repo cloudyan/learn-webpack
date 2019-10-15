@@ -6,6 +6,7 @@
 - [Tobias Koppers：我当初为什么写webpack](https://mp.weixin.qq.com/s?__biz=MjM5MTA1MjAxMQ==&mid=2651228535&idx=1&sn=06d7aba782e719c2db719f749d13962a&chksm=bd4950f38a3ed9e5366fbf1944ffa4e70d68ef3e1654ae85537fd123f4c6a6f38f22097dbcac&scene=21#wechat_redirect)
 - [剖析webpack模块化原理](https://segmentfault.com/a/1190000014389653)
 - [webpack模块化原理-commonjs](https://segmentfault.com/a/1190000010349749)
+- [unused harmony exports](https://github.com/lihongxun945/diving-into-webpack/blob/master/8-tree-shaking.md)
 
 分析打包产物，调试打包结果。自己实现一遍打包输出所提供的工具函数功能
 

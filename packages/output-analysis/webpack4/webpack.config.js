@@ -6,7 +6,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 // const MyPlugin = require('./plugins/MyPlugin');
 
 module.exports = {
-  entry: './src/main.js',
+  entry: {
+    main: './src/main.js',
+    runtime: './src/runtime.js',
+  },
   mode: 'production', // 输出模式 默认production，`webpack --mode=production`
   // target: 'web', // 部署目标 默认 web，可选 node webworker async-node ...
   devtool: 'cheap-source-map',
@@ -20,6 +23,30 @@ module.exports = {
   // module: {
   //   rules: [{ test: /\.txt$/, use: 'raw-loader' }],
   // },
+  optimization: {
+    usedExports: true, // 标注 unused harmony exports
+    splitChunks: {
+      chunks: 'all',
+      minSize: 0,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      name: true,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
   plugins: [
     new webpack.DefinePlugin(
       {

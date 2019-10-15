@@ -30,7 +30,7 @@
     };
 
     // Execute the module function
-    // 2.3 call 执行模块
+    // 2.3 call 执行模块对应的函数
     // module -- 当前模块对象引用
     // module.exports -- 模块导出对象引用
     // __webpack_require__ -- 用于在模块中加载其他模块
