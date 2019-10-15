@@ -1,0 +1,25 @@
+{
+  "name": "@deepjs/output-analysis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "rm -rf ./dist && ./node_modules/.bin/webpack --mode development --config ./webpack.config.js",
+    "dev1": "rm -rf ./dist && ./node_modules/.bin/webpack --config ./webpack.config.js",
+    "dev2": "rm -rf ./dist-2 && ./node_modules/.bin/webpack --config ./webpack.config-2.js",
+    "debug": "node --nolazy --inspect-brk=9229 ./node_modules/.bin/webpack --mode development --watch --config ./webpack.config1.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^4.41.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.0.4",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "inline-manifest-webpack-plugin": "^4.0.2",
+    "webpack-cli": "^3.3.9"
+  }
+}

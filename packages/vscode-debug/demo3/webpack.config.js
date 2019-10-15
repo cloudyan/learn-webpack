@@ -1,5 +1,6 @@
 const path = require('path');
 const HelloWorldPlugin = require('./plugins/HelloWorldPlugin');
+const MyPlugin = require('./plugins/MyPlugin');
 // const MyExampleWebpackPlugin = require('./plugins/MyExampleWebpackPlugin');
 // const HelloCompilationPlugin = require('./plugins/HelloCompilationPlugin');
 // const HelloAsyncPlugin = require('./plugins/HelloAsyncPlugin');
@@ -22,6 +23,7 @@ module.exports = {
   // 插件
   plugins: [
     new HelloWorldPlugin({ options: true }),
+    new MyPlugin({ options: true }),
     // new MyExampleWebpackPlugin(),
     // new HelloCompilationPlugin(),
     // new HelloAsyncPlugin(),

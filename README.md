@@ -5,7 +5,7 @@
 - config-usage 配置使用，关键配置，如何配置，如何优化
   - demo1
 - output-analysis 输出代码分析
-- vscode-debug 如何调试
+- vscode-debug 如何使用 vscode 调试
 - plugins 插件开发，实现什么功能
   - 转码（如es6 转 es5，多态支持）
   - 输出
@@ -13,7 +13,32 @@
 - src 源码学习
   - tabable
 
+**概念术语**
+
+webpack 中的所涉及的以下名词，都是指什么？官网解释[概念术语](https://webpack.docschina.org/glossary)，下面是总结介绍
+
+- file: 最终打包生成的文件
+- module: [模块](https://webpack.js.org/concepts/modules/#what-is-a-webpack-module)，webpack 中要加载的一切css img js和所有的依赖都是Module
+- chunk: webpack 内部用来管理 building 过程。
+  - entry chunk: 入口代码块，包含了 webpack 运行时需要的一些函数，如 webpackJsonp, `__webpack_require__` 等以及依赖的一系列模块
+  - normal chunk: 普通代码块没有包含运行时需要的代码，只包含模块代码，其结构由加载方式决定
+  - initial chunk: 与入口代码块对应的一个概念是入口模块（module 0），如果入口代码块中包含了入口模块 webpack 会立即执行这个模块，否则会等待包含入口模块的代码块，**包含入口模块的代码块其实就是 initial chunk**。
+- bundle: bundle 由 chunk 组成。
+  - 其中有几种类型（例如，入口 chunk(entry chunk) 和子 chunk(child chunk)）。
+  - 通常 chunk 会直接对应所输出的 bundle，但是有一些配置并不会产生一对一的关系。
+- Bundle Splitting: Bundle 分离，
+- Code Splitting: 代码分割，指将代码分离到每个 bundles/chunks 里面，你可以按需加载，而不是加载一个包含全部的 bundle。
+- Tree Shaking: 移除未使用/多余的代码，或者更准确地说，只导入引用的代码。
+- plugin 一个含有 `apply` 属性的 JavaScript 对象。该 apply 属性会在 webpack 编译时被调用，并能在整个编译生命周期访问。
+  - compiler 对象包含了 Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息，这个对象在 Webpack 启动时候被实例化，它是全局唯一的，可以简单地把它理解为 Webpack 实例；
+  - compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象。
+- [bundle 分析](https://webpack.js.org/guides/code-splitting/#bundle-analysis)
+
 ## vscode 调试 webpack
+
+调试可以参见 [debugging](https://github.com/deepjs-net/debugging)
+
+也可以查看此项目中的各种用法
 
 ### 方法一
 
@@ -103,3 +128,11 @@ vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Laun
 - https://www.webpackjs.com/concepts/
 - https://github.com/ruanyf/webpack-demos
 - https://github.com/Microsoft/vscode-recipes
+- https://github.com/liangklfangl/webpack-core-usage
+- https://www.cnblogs.com/dashnowords/category/1284284.html
+
+常见 plugins
+
+- copy-webpack-plugin
+- vconsole-webpack-plugin
+- vue-cli-plugin-vConsole
