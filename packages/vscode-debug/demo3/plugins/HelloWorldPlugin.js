@@ -7,8 +7,17 @@ class HelloWorldPlugin {
     this.options = options;
   }
 
+  // apply 方法是必须要有
+  // apply 方法会被 webpack compiler 调用，并且 compiler 对象可在整个编译生命周期访问
   apply(compiler) {
     console.log(compiler);
+
+    // compiler.plugin('run', function(compiler, callback) {
+    //   console.log('webpack 构建过程开始！！！');
+
+    //   callback();
+    // });
+
     debugger;
 
     compiler.hooks.entryOption.tap('HelloWorldPlugin2', xx => {
