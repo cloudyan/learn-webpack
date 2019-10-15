@@ -65,3 +65,7 @@ ipch
 dist
 tempCodeRunnerFile
 *.out
+stats.json
+
+# temp
+webpack-loader

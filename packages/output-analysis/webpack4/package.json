@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "rm -rf ./dist && ./node_modules/.bin/webpack --mode development --config ./webpack.config.js",
     "dev1": "rm -rf ./dist && ./node_modules/.bin/webpack --config ./webpack.config.js",
-    "dev2": "rm -rf ./dist-2 && ./node_modules/.bin/webpack --config ./webpack.config-2.js",
     "debug": "node --nolazy --inspect-brk=9229 ./node_modules/.bin/webpack --mode development --watch --config ./webpack.config1.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
