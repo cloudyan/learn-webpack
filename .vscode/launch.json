@@ -61,6 +61,22 @@
       "env" : { "NODE_ENV" : "production" },
       // "envFile": "${workspaceFolder}/xxx.env",
     },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "webpack:plugin debug",
+      "program": "${workspaceFolder}/node_modules/.bin/webpack",
+      "args": [
+        // 默认为 `./webpack.config.js`
+        "--watch",
+        "--progress",
+        "--colors",
+        "--mode", "development",
+        "--config", "./packages/webpack-plugin/build/webpack.config.js"
+      ],
+      "env" : { "NODE_ENV" : "production" },
+      // "envFile": "${workspaceFolder}/xxx.env",
+    },
 
   ]
 }

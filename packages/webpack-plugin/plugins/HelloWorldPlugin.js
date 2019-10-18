@@ -15,7 +15,7 @@ class HelloWorldPlugin {
     compiler.hooks.emit.tapAsync(
       'ExampleWebpackPlugin',
       (compilation, callback) => {
-        console.log('This is an example plugin!');
+        console.log('\nThis is an example plugin!');
         // console.log('Here’s the `compilation` object which represents a single build of assets:', compilation);
 
         // 使用 webpack 提供的 plugin API 操作构建结果
@@ -23,7 +23,7 @@ class HelloWorldPlugin {
 
         // 做一些异步的事情……
         setTimeout(function() {
-          console.log('Done with async work...');
+          console.log('\nDone with async work...');
           callback();
         }, 1000);
       }
@@ -34,7 +34,7 @@ class HelloWorldPlugin {
       // stats is passed as argument when done hook is tapped.
 
       // debugger
-      console.log('Hello World!')
+      console.log('\nHello World!')
       console.log(this.options)
     })
 
@@ -42,7 +42,7 @@ class HelloWorldPlugin {
     compiler.hooks.compilation.tap('HelloCompilationPlugin', compilation => {
       // 现在，通过 compilation 对象，我们可以 tap(触及) 到各种可用的 hooks 了
       compilation.hooks.optimize.tap('HelloCompilationPlugin', () => {
-        console.log('正在优化资源。');
+        console.log('\n正在优化资源。');
       });
     });
 
@@ -50,7 +50,7 @@ class HelloWorldPlugin {
       // 返回一个 Promise，在我们的异步任务完成时 resolve……
       return new Promise((resolve, reject) => {
         setTimeout(function() {
-          console.log('异步工作完成……');
+          console.log('\n异步工作完成...');
           resolve();
         }, 1000);
       });
