@@ -1,4 +1,6 @@
 const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HelloWorldPlugin = require('../plugins/HelloWorldPlugin')
 const FileListPlugin = require('../plugins/FileListPlugin')
 const MyPlugin = require('../plugins/MyPlugin')
@@ -10,6 +12,9 @@ class AA {
 
   apply(compiler) {
     console.log('AA', this.options)
+    compiler.hooks.run.tap('AA', compilation=>{
+      console.log('webpack构建过程开始');
+    })
   }
 }
 
@@ -62,6 +67,15 @@ module.exports = {
   },
   // 插件
   plugins: [
+    new HtmlWebpackPlugin(
+      {
+        title: 'My App',
+        filename: 'index.html',
+        template: '../src/index.html',
+        inject: true,
+        // chunksSortMode: 'dependency',
+      }
+    ),
     new AA({ test: true }),
     new HelloWorldPlugin({ show: true }),
     new FileListPlugin(),
