@@ -1,6 +1,9 @@
+// https://webpack.docschina.org/contribute/writing-a-plugin/#compiler-%E5%92%8C-compilation
+
 class FileListPlugin {
   /* eslint class-methods-use-this: 0 */
   apply(compiler) {
+    // emit 是异步 hook，使用 tapAsync 触及它，还可以使用 tapPromise/tap(同步)
     compiler.hooks.emit.tapAsync('FileListPlugin', (compilation, callback) => {
       // 在生成文件中，创建一个头部字符串：
       let filelist = 'In this build:\n\n'
