@@ -10,11 +10,13 @@ class HelloWorldPlugin {
 
   // 将 `apply` 定义为其原型方法，此方法以 compiler 作为参数
   apply(compiler) {
+    // 打印出entryOption执行完毕时Compiler暴露的钩子
+    for(var hook of Object.keys(compiler.hooks)){
+      console.log(hook);
+    }
 
     // 指定要附加到的事件钩子函数
-    compiler.hooks.emit.tapAsync(
-      'ExampleWebpackPlugin',
-      (compilation, callback) => {
+    compiler.hooks.emit.tapAsync('ExampleWebpackPlugin', (compilation, callback) => {
         console.log('\nThis is an example plugin!');
         // console.log('Here’s the `compilation` object which represents a single build of assets:', compilation);
 

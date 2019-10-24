@@ -23,6 +23,7 @@ webpack 中的所涉及的以下名词，都是指什么？官网解释[概念�
   - entry chunk: 入口代码块，包含了 webpack 运行时需要的一些函数，如 webpackJsonp, `__webpack_require__` 等以及依赖的一系列模块
   - normal chunk: 普通代码块没有包含运行时需要的代码，只包含模块代码，其结构由加载方式决定
   - initial chunk: 与入口代码块对应的一个概念是入口模块（module 0），如果入口代码块中包含了入口模块 webpack 会立即执行这个模块，否则会等待包含入口模块的代码块，**包含入口模块的代码块其实就是 initial chunk**。
+- assets: 就是那些将要被 webpack 输出的文件。它们可以是任何类型的文件，比如样式、图片或者 html 文件
 - bundle: bundle 由 chunk 组成。
   - 其中有几种类型（例如，入口 chunk(entry chunk) 和子 chunk(child chunk)）。
   - 通常 chunk 会直接对应所输出的 bundle，但是有一些配置并不会产生一对一的关系。
