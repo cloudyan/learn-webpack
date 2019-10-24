@@ -5,7 +5,9 @@ class ExampleWebpackPlugin {
   }
 
   apply(compiler) {
-
+    compiler.hooks.customHook.tap('CustomHook', (data) => {
+      console.log('@CustomHook', data)
+    })
   }
 }
 

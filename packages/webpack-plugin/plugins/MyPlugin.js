@@ -1,10 +1,22 @@
 // https://webpack.docschina.org/contribute/plugin-patterns/
 // https://www.cnblogs.com/sampapa/p/6958166.html
 
+const { SyncHook } = require('tapable')
+
 // 关于 chunks modules dependencies files assets
 class MyPlugin {
   /* eslint class-methods-use-this: 0 */
   apply(compiler) {
+
+    // 实例化自定义事件
+    compiler.hooks.customHook = new SyncHook(['data'])
+
+    compiler.hooks.environment.tap('CustomHook', () => {
+      //广播自定义事件
+      compiler.hooks.customHook.call(`It's my custom hook.`)
+      console.log('@environment');
+    })
+
     compiler.hooks.emit.tapAsync('MyPlugin', (compilation, callback) => {
 
       // 检测观察图

@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HelloWorldPlugin = require('../plugins/HelloWorldPlugin')
 const FileListPlugin = require('../plugins/FileListPlugin')
 const MyPlugin = require('../plugins/MyPlugin')
+const ExamplePlugin = require('../plugins/ExamplePlugin')
 const AccessDependenciesPlugin = require('../plugins/AccessDependenciesPlugin')
 
 class AA {
@@ -81,6 +82,7 @@ module.exports = {
     new HelloWorldPlugin({ show: true }),
     new FileListPlugin(),
     new MyPlugin(),
+    new ExamplePlugin({ test: 111 }),
     new AccessDependenciesPlugin(),
   ],
 }
