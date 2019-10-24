@@ -8,3 +8,4 @@
 参考:
 
 - https://webpack.docschina.org/contribute/writing-a-plugin/#compiler-%E5%92%8C-compilation
+- https://github.com/lcxfs1991/blog/issues/1
