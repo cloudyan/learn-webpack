@@ -1,5 +1,7 @@
 # learn-webpack
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/cloudyan/learn-webpack.svg)](https://greenkeeper.io/)
+
 学习 webpack4
 
 - config-usage 配置使用，关键配置，如何配置，如何优化
