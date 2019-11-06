@@ -712,13 +712,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@dwdjs/utils@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.npmjs.org/@dwdjs/utils/-/utils-0.2.3.tgz#1a1e9117a1044200128bffb89062d4ad6d2252df"
-  integrity sha512-8outsBMqORJrvvm5My55y7q1DbQ10xNz3iq4jTBeQB14DWOhknUKQYr8osNWm/1dPxQIcZU9ah7ASKIKz9HMtA==
+"@dwdjs/utils@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@dwdjs/utils/-/utils-1.0.0.tgz#7d4c51c96d6a7eb25b9f20314aacbe99b54b5277"
+  integrity sha512-ISQzk4GPW5RHWRyxtILRqtk2nxLID+XBudQ0e+Cdsi60Ab4GjDQijRfJ6bg6jgbVFWXCFbA7F/7o81eDZPMLxg==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    js-cookie "^2.2.0"
+    js-cookie "^2.2.1"
 
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
@@ -6397,9 +6397,9 @@ jest@^24.9.0:
     import-local "^2.0.0"
     jest-cli "^24.9.0"
 
-js-cookie@^2.2.0:
+js-cookie@^2.2.1:
   version "2.2.1"
-  resolved "https://registry.npmjs.org/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
   integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
 
 js-levenshtein@^1.1.3:
@@ -9601,11 +9601,6 @@ symbol-tree@^3.2.2:
   version "3.2.4"
   resolved "https://registry.npm.taobao.org/symbol-tree/download/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha1-QwY30ki6d+B4iDlR+5qg7tfGP6I=
-
-tabable@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npm.taobao.org/tabable/download/tabable-1.0.0.tgz#187c536012eb2ba7121c9d5c1fc9fef62084c4c4"
-  integrity sha1-GHxTYBLrK6cSHJ1cH8n+9iCExMQ=
 
 table@^5.2.3:
   version "5.4.6"
