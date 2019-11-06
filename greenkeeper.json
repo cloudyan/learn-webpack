@@ -1,0 +1,15 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "packages/output-analysis/webpack4/package.json",
+        "packages/vscode-debug/demo1/package.json",
+        "packages/vscode-debug/demo2/package.json",
+        "packages/vscode-debug/demo3/package.json",
+        "packages/vscode-debug/demo4/package.json",
+        "packages/webpack-plugin/package.json"
+      ]
+    }
+  }
+}
