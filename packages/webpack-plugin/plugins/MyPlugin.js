@@ -8,6 +8,7 @@ class MyPlugin {
   /* eslint class-methods-use-this: 0 */
   apply(compiler) {
 
+    // https://github.com/jerryOnlyZRJ/webpack-loader/blob/master/docs/webpack-plugin.md
     // 实例化自定义事件
     compiler.hooks.customHook = new SyncHook(['data'])
 
