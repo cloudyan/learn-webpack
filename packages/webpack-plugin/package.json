@@ -18,6 +18,5 @@
     "webpack-cli": "^3.3.9"
   },
   "dependencies": {
-    "@dwdjs/utils": "^0.2.3"
   }
 }
