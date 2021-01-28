@@ -18,13 +18,15 @@
 webpack 中的所涉及的以下名词，都是指什么？官网解释[概念术语](https://webpack.docschina.org/glossary)，下面是总结介绍
 
 - file: 最终打包生成的文件
-- module: [模块](https://webpack.js.org/concepts/modules/#what-is-a-webpack-module)，webpack 中要加载的一切css img js和所有的依赖都是Module
+- module: [模块](https://webpack.js.org/concepts/modules/#what-is-a-webpack-module)，
+  - 就是js的模块化webpack支持commonJS、ES6等模块化规范，简单来说就是你通过import语句引入的代码。
+  - webpack 中要加载的一切css img js和所有的依赖都是Module
 - chunk: webpack 内部用来管理 building 过程。
   - entry chunk: 入口代码块，包含了 webpack 运行时需要的一些函数，如 webpackJsonp, `__webpack_require__` 等以及依赖的一系列模块
   - normal chunk: 普通代码块没有包含运行时需要的代码，只包含模块代码，其结构由加载方式决定
   - initial chunk: 与入口代码块对应的一个概念是入口模块（module 0），如果入口代码块中包含了入口模块 webpack 会立即执行这个模块，否则会等待包含入口模块的代码块，**包含入口模块的代码块其实就是 initial chunk**。
 - assets: 就是那些将要被 webpack 输出的文件。它们可以是任何类型的文件，比如样式、图片或者 html 文件
-- bundle: bundle 由 chunk 组成。
+- bundle: bundle 由 chunk 组成。是webpack打包之后的各个文件，一般就是和chunk是一对一的关系，bundle就是对chunk进行编译压缩打包等处理之后的产出。
   - 其中有几种类型（例如，入口 chunk(entry chunk) 和子 chunk(child chunk)）。
   - 通常 chunk 会直接对应所输出的 bundle，但是有一些配置并不会产生一对一的关系。
 - Bundle Splitting: Bundle 分离，
@@ -37,13 +39,13 @@ webpack 中的所涉及的以下名词，都是指什么？官网解释[概念�
 
 ## vscode 调试 webpack
 
-调试可以参见 [debugging](https://github.com/deepjs-net/debugging)
+调试可以参见 [debugging](https://github.com/cloudyan/debugging)
 
 也可以查看此项目中的各种用法
 
 ### 方法一
 
-示例参见 [webpack4/demo1](https://github.com/cloudyan/learn-webpack/tree/master/packages/webpack4/demo1)
+示例参见 [webpack4/demo1](https://github.com/cloudyan/learn-webpack/tree/master/packages/vscode-debug/demo1)
 
 使用当前项目添加 `.vscode/launch.json` 以下配置，添加断点调用 `debug webpack` 调试 webpack
 
@@ -92,7 +94,7 @@ webpack 中的所涉及的以下名词，都是指什么？官网解释[概念�
 
 ### 方法二
 
-参见 [webpack4/demo2](https://github.com/cloudyan/learn-webpack/tree/master/packages/webpack4/demo2)
+参见 [webpack4/demo2](https://github.com/cloudyan/learn-webpack/tree/master/packages/vscode-debug/demo2)
 
 vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Launch Webpack` 调试 webpack
 
@@ -131,6 +133,7 @@ vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Laun
 - https://github.com/Microsoft/vscode-recipes
 - https://github.com/liangklfangl/webpack-core-usage
 - https://www.cnblogs.com/dashnowords/category/1284284.html
+- [理解webpack4.splitChunks](https://www.cnblogs.com/kwzm/p/10314438.html)
 
 常见 plugins
 
