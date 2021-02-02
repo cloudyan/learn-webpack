@@ -13,31 +13,44 @@
 - src 源码学习
   - tabable
 
-**概念术语**
+## 概念术语
 
 webpack 中的所涉及的以下名词，都是指什么？官网解释[概念术语](https://webpack.docschina.org/glossary)，下面是总结介绍
 
 - file: 最终打包生成的文件
-- module: [模块](https://webpack.js.org/concepts/modules/#what-is-a-webpack-module)，
+- module: 是离散功能块[模块](https://webpack.js.org/concepts/modules/#what-is-a-webpack-module)，
   - 就是js的模块化webpack支持commonJS、ES6等模块化规范，简单来说就是你通过import语句引入的代码。
   - webpack 中要加载的一切css img js和所有的依赖都是Module
 - chunk: webpack 内部用来管理 building 过程。
   - entry chunk: 入口代码块，包含了 webpack 运行时需要的一些函数，如 webpackJsonp, `__webpack_require__` 等以及依赖的一系列模块
   - normal chunk: 普通代码块没有包含运行时需要的代码，只包含模块代码，其结构由加载方式决定
   - initial chunk: 与入口代码块对应的一个概念是入口模块（module 0），如果入口代码块中包含了入口模块 webpack 会立即执行这个模块，否则会等待包含入口模块的代码块，**包含入口模块的代码块其实就是 initial chunk**。
+- separate chunk 块hash
 - assets: 就是那些将要被 webpack 输出的文件。它们可以是任何类型的文件，比如样式、图片或者 html 文件
 - bundle: bundle 由 chunk 组成。是webpack打包之后的各个文件，一般就是和chunk是一对一的关系，bundle就是对chunk进行编译压缩打包等处理之后的产出。
   - 其中有几种类型（例如，入口 chunk(entry chunk) 和子 chunk(child chunk)）。
   - 通常 chunk 会直接对应所输出的 bundle，但是有一些配置并不会产生一对一的关系。
 - Bundle Splitting: Bundle 分离，
-- Code Splitting: 代码分割，指将代码分离到每个 bundles/chunks 里面，你可以按需加载，而不是加载一个包含全部的 bundle。
+- Code Splitting: 代码分割，指将代码分离到不同的 bundles/chunks 包/块里面，然后可以按需加载，而不是加载一个包含全部内容的单独包 bundle。
 - Tree Shaking: 移除未使用/多余的代码，或者更准确地说，只导入引用的代码。
 - plugin 一个含有 `apply` 属性的 JavaScript 对象。该 apply 属性会在 webpack 编译时被调用，并能在整个编译生命周期访问。
   - compiler 对象包含了 Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息，这个对象在 Webpack 启动时候被实例化，它是全局唯一的，可以简单地把它理解为 Webpack 实例；
   - compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象。
 - [bundle 分析](https://webpack.js.org/guides/code-splitting/#bundle-analysis)
+- Dependency Graph: 任何时候，一个文件依赖于另一个文件，webpack 就把此视为文件之间有 依赖关系 。从这些入口起点开始，webpack 递归地构建一个依赖图，这个依赖图包含着应用程序所需的每个模块。
+- Manifest: 当完成打包并发送到浏览器时，会在运行时通过 Manifest 来解析和加载模块。
+  - 了解如何提取 manifest
 
-## vscode 调试 webpack
+## 关于打包，拆包，为什么
+
+分析参看 webpack4-splitChunks
+
+## 其他分析
+
+- [打包产物分析](https://github.com/cloudyan/learn-webpack/tree/master/packages/output-analysis#webpack-%E6%89%93%E5%8C%85%E4%BA%A7%E7%89%A9%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90)
+- [关于模块加载](https://github.com/cloudyan/learn-webpack/tree/master/packages/output-analysis#%E5%85%B3%E4%BA%8E%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD)
+
+## 关于调试 vscode or devtool
 
 调试可以参见 [debugging](https://github.com/cloudyan/debugging)
 
@@ -125,6 +138,17 @@ vscode 全局设置 `setting.json` 配置以下项目，添加断点调用 `Laun
 ```
 
 参考： https://medium.com/@jsilvax/debugging-webpack-with-vs-code-b14694db4f8e
+
+### 方法三
+
+使用 devtool 调试
+
+```bash
+node --inspect-brk ./node_modules/.bin/webpack
+
+# 然后在浏览器里打开 chrome://inspect/#devices 进行 inspect 和断点。
+# 上述命令会在第一行断点，不好的地方是，没有资源列表
+```
 
 参考资料：
 
