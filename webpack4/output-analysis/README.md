@@ -8,7 +8,7 @@
 - [webpack模块化原理-commonjs](https://segmentfault.com/a/1190000010349749)
 - [unused harmony exports](https://github.com/lihongxun945/diving-into-webpack/blob/master/8-tree-shaking.md)
 
-分析打包产物，调试打包结果。自己实现一遍打包输出所提供的工具函数功能
+分析打包产物，调试打包结果。自己实现一遍打包输出所提供的工具函数功能 [toy-webpack]
 
 重点：
 
