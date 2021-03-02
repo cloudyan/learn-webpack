@@ -20,8 +20,10 @@ webpack 中的所涉及的以下名词，都是指什么？官网解释[概念�
 - file: 最终打包生成的文件
 - module: 是离散功能块[模块](https://webpack.js.org/concepts/modules/#what-is-a-webpack-module)，
   - 就是js的模块化webpack支持commonJS、ES6等模块化规范，简单来说就是你通过import语句引入的代码。
-  - webpack 中要加载的一切css img js和所有的依赖都是Module
+  - webpack 中要加载的一切css img js和所有的依赖，每一个都可以看作是一个Module
 - chunk: webpack 内部用来管理 building 过程。
+  - 每一个打包落地的输出文件其实都是一个 chunk，每个 chunk 都包含很多 module
+  - 默认的 chunk 数量实际上是由你的入口文件的数量决定的，但是如果你配置动态加载或者提取公共包的话，也会生成新的 chunk。
   - entry chunk: 入口代码块，包含了 webpack 运行时需要的一些函数，如 webpackJsonp, `__webpack_require__` 等以及依赖的一系列模块
   - normal chunk: 普通代码块没有包含运行时需要的代码，只包含模块代码，其结构由加载方式决定
   - initial chunk: 与入口代码块对应的一个概念是入口模块（module 0），如果入口代码块中包含了入口模块 webpack 会立即执行这个模块，否则会等待包含入口模块的代码块，**包含入口模块的代码块其实就是 initial chunk**。
@@ -40,6 +42,15 @@ webpack 中的所涉及的以下名词，都是指什么？官网解释[概念�
 - Dependency Graph: 任何时候，一个文件依赖于另一个文件，webpack 就把此视为文件之间有 依赖关系 。从这些入口起点开始，webpack 递归地构建一个依赖图，这个依赖图包含着应用程序所需的每个模块。
 - Manifest: 当完成打包并发送到浏览器时，会在运行时通过 Manifest 来解析和加载模块。
   - 了解如何提取 manifest
+- 关于各种 hash 的区别
+  - [hash] is a "unique hash generated for every build"
+    - 每次构建的生成唯一的一个hash，且所有的文件hash串是一样的。
+  - [chunkhash] is "based on each chunks' content"
+    - 每一个文件最后的hash根据它引入的chunk决定（模块的 id 值为索引，如果变更，会导致不稳定性）
+    - 可使用 new webpack.HashedModuleIdsPlugin() 来解决（将默认的数字 id 命名规则换成路径的方式）
+    - umi使用了 HashedModuleIdsPlugin 来进行稳定的hash构建
+  - [contenthash] is "generated for extracted content"
+    - 根据抽取到的内容来生成hash，推荐
 
 ## 关于打包，拆包，为什么
 
