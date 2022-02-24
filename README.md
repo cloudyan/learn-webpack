@@ -13,6 +13,10 @@
 - src 源码学习
   - tabable
 
+这个资料也不错，浅显易懂，是极客时间《玩转 webpack》的提供的[课程源码](https://github.com/cpselvis/geektime-webpack-course)，全量提供了，感谢**程柳锋**
+
+这个课程不错，正如其名，可以让你实现从 0 到 1 玩转 webpack。
+
 ## 概念术语
 
 webpack 中的所涉及的以下名词，都是指什么？官网解释[概念术语](https://webpack.docschina.org/glossary)，下面是总结介绍
