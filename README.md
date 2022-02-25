@@ -1,21 +1,30 @@
 # learn-webpack
 
-学习 webpack4
+以前的内容，非常零碎，重新整理了下
 
-- config-usage 配置使用，关键配置，如何配置，如何优化
-  - demo1
 - output-analysis 输出代码分析
-- vscode-debug 如何使用 vscode 调试
-- plugins 插件开发，实现什么功能
-  - 转码（如es6 转 es5，多态支持）
-  - 输出
-  - vue code 转小程序code
-- src 源码学习
-  - tabable
+- vscode-debug 如何使用 vscode 调试 webpack
+- tapable 源码学习
+- webpack-plugin 手写一个 plugin
+- webpack-splitchunks 深入理解 splitChunks
 
-这个资料也不错，浅显易懂，是极客时间《玩转 webpack》的提供的[课程源码](https://github.com/cpselvis/geektime-webpack-course)，全量提供了，感谢**程柳锋**
+这里有个资料不错，推荐下，浅显易懂，是极客时间《玩转 webpack》的课程。[课程源码](https://github.com/cpselvis/geektime-webpack-course)，全量提供了，感谢**程柳锋**
 
-这个课程不错，正如其名，可以让你实现从 0 到 1 玩转 webpack。
+正如其名，可以让你实现从 0 到 1 玩转 webpack。
+
+这里将 webpack 知识点结合《玩转 webpack》系统化重新整理下文档
+
+我们可以带着问题来看
+
+1. webpack 基础配置
+2. 如何优化打包时间
+   1. 分析时间
+   2. 优化方案
+3. 如何优化打包体积
+   1. 分析体积
+   2. 优化方案
+4. 深入 loader
+5. 深入 plugin
 
 ## 概念术语
 
