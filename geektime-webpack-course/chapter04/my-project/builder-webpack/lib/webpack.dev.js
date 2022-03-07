@@ -6,12 +6,12 @@ const baseConfig = require('./webpack.base');
 const devConfig = {
   mode: 'production',
   plugins: [
-  new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
-  contentBase: './dist',
-  hot: true,
-  stats: 'errors-only',
+    contentBase: './dist',
+    hot: true,
+    stats: 'errors-only',
   },
   devtool: 'cheap-source-map',
 };

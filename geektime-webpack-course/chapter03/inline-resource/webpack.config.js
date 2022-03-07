@@ -91,7 +91,7 @@ module.exports = {
             options: {
               plugins: () => [
                 require('autoprefixer')({
-                  browsers: ['last 2 version', '>1%', 'ios 7']
+                  overrideBrowserslist: ['last 2 version', '>1%', 'ios 7']
                 })
               ]
             }
@@ -115,7 +115,7 @@ module.exports = {
           {
             loader: 'inline-file-loader',
             options: {
-              name: '[name]_[hash:8][ext]'
+              name: '[name]_[hash:8].[ext]'
             }
           }
         ]
