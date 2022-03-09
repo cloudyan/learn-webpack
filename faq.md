@@ -143,7 +143,6 @@ module.exports = {
 
 #### 核心概念 entry？
 
-
 ```js
 // 单入口
 entry: './src/index.js',
@@ -214,11 +213,143 @@ webpack4 内置功能
  production  | 设置 `process.env.NODE_ENV` 的值为 `production`, 开启 `FlagDependencyUsagePlugin`, `FlagIncludeChunksPlugin`, `ModuleConcatenationPlugin`, `NoEmitOnErrorsPlugin`, `OccurenceOrderPlugin`, `SideEffectsFlagPlugin`, `TerserPlugin`
  none        | 不开启任何优化选项
 
+### 资源解析
+
+- 解析 ES6 babel-loader
+  - 增加 babel preset
+- 解析 React JSX
+- 解析 CSS
+- 解析 Less 或 Sass
+- 解析图片
+- 解析字体
+  - file-loader
+  - url-loader
+
+相关代码配置
+
+```js
+// .babelrc.js
+module.exports = {
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ]
+}
+```
+
+```js
+// webpack.config.js
+// 说出下面每个配置做什么的
+'use strict';
+
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  entry: {
+    index: './src/index.js',
+    search: './src/search.js'
+  },
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: '[name]_[chunkhash:8].js'
+  },
+  mode: 'production',
+  module: {
+    rules: [
+      {
+        test: /.js$/,
+        use: 'babel-loader'
+      },
+      {
+        test: /.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          // 'style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /.less$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          // 'style-loader',
+          'css-loader',
+          'less-loader'
+        ]
+      },
+      {
+        test: /.(png|jpg|gif|jpeg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name]_[hash:8].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name]_[hash:8][ext]'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name]_[contenthash:8].css'
+    }),
+    new OptimizeCSSAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano')
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src/index.html'),
+      filename: 'index.html',
+      chunks: ['index'],
+      inject: true,
+      minify: {
+        html5: true,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: false
+      }
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src/search.html'),
+      filename: 'search.html',
+      chunks: ['search'],
+      inject: true,
+      minify: {
+        html5: true,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: false
+      }
+    })
+  ]
+};
+```
+
 ### webpack 中的文件监听
 
 webpack 开启监听模式，有两种方式
 
-- webpack --watch
+- scripts 命令 `webpack --watch`
+  - 唯⼀缺陷：每次需要⼿动刷新浏览器
 - 配置 webpack.config.js 中设置 watch: true
 
 唯一缺陷：每次需要手动刷新浏览器
@@ -230,6 +361,7 @@ webpack 开启监听模式，有两种方式
 某个文件发生了变化，并不会立刻告诉监听者，而是先缓存起来，等 aggregateTimeout
 
 ```js
+// webpack.config.js
 module.exports = {
   // 默认 false, 也就是不开启
   watch: true,
@@ -251,19 +383,46 @@ module.exports = {
 
 ### webpack 的热更新
 
-- `webpack-dev-server`
-  - 不刷新浏览器
+- scripts 命令 `webpack-dev-server --open`
+  - WDS 不刷新浏览器
+  - WDS 不输出⽂件，⽽是放在内存中
   - 使用插件 `webpack.HotModuleReplacementPlugin`
 - `webpack-dev-middleware`
+  - WDM 将 webpack 输出的⽂件传输给服务器
+  - 适⽤于灵活的定制场景
+
+```js
+const express = require('express');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-devmiddleware');
+const app = express();
+const config = require('./webpack.config.js');
+const compiler = webpack(config);
+  app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath
+}));
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!\n');
+});
+```
 
 #### webpack 的热更新原理？
+
+- Webpack Compile: 将 JS 编译成 Bundle
+- HMR Server: 将热更新的⽂件输出给 HMR Rumtime
+- Bundle server: 提供⽂件在浏览器的访问
+- HMR Rumtime: 会被注⼊到浏览器，更新⽂件的变化
+- bundle.js: 构建输出的⽂件
+
 
 
 - https://juejin.cn/post/6844904008432222215
 
-### 文件指纹是什么，如何生成的？
+### 什么是文件指纹，如何生成的？
 
-文件指纹
+打包后输出的⽂件名的后缀
+
+⽂件指纹如何⽣成
 
  类型         | 描述
  hash        | 和整个项目的构建相关，只要项目文件有修改，整个项目构建的 hash 值就会更改
@@ -281,20 +440,20 @@ file-loader 占位符
  [hash]         | 文件的内容 hash，默认是 md5 生成
  [emoji]         | 一个随机的指代文件内容的 emoji
 
-我们在使用时，该怎么选择？为什么？
+使用文件指纹，该怎么选择？为什么？
 
 - js 设置 `output` 的 `filename`, 使用 [chunkhash]
 - css 设置 `MiniCssExtractPlugin` 的 `filename`, 使用 [contenthash]
 - 图片 设置 `file-loader` 的name, 使用 [hash], 默认是 md5 生成
 
-代码压缩
+### 代码压缩
 
-- JS 压缩
+- JS 的压缩
   - 内置了 `uglifyjs-webpack-plugin`
-- CSS 压缩
+- CSS 的压缩
   - 使用 `optimize-css-assets-webpack-plugin`
   - 同时使用 `cssnano`
-- HTML 压缩
+- HTML 的压缩
   - 修改 `html-webpack-plugin`, 设置压缩参数 `minify: {}`
 
 ```js
@@ -338,15 +497,145 @@ module.exports = {
 }
 ```
 
-### sourceMap 都有哪些配置？应该怎么用？
+## webpack 进阶
 
- 关键字 | 描述
- ----- | ---
- eval  | 使用 eval 包裹模块代码
+#### 自动清理构建目录
+
+- `rm -rf ./dist`
+- `rimraf ./dist`
+- 使用插件 `clean-webpack-plugin`
+  - 默认删除 output 指定的输出目录
+
+#### 预处理器
+
+- `autoprefixer` 自动补全 csss3 前缀
+- px2rem-loader
+  - lib-flexible
+  - px2rem
+- px2vw
+  - postcss-px-to-vw
+
+```js
+// 预处理器
+// 配置 loader 规则
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /.less$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            // 需要 lib-flexible 配合
+            // 新方案可以使用 px2vw
+            loader: 'px2rem-loader',
+            options: {
+              remUnit: 75,
+              remPrecision: 8
+            }
+          },
+          'less-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [
+                require('autoprefixer')({
+                  // 建议独立在 browserslist 中配置
+                  overrideBrowserslist: ['last 2 version', '>1%', 'ios 7']
+                })
+              ]
+            }
+          }
+        ]
+      },
+    ]
+  }
+}
+```
+
+#### 资源内联的意义
+
+- 代码层面
+  - 页面框架的初始化脚本
+  - 上报相关打点
+  - css 内联避免页面闪动
+- 请求层面：减少 HTTP 网络请求数
+  - 小图片或者字体内联（url-loader）
+
+实现
+
+- HTML 和 JS 内联
+  - `<script>${require(' raw-loader!babel-loader!. /meta.html')}</script>`
+  - `<script>${require('raw-loader!babel-loader!../node_modules/lib-flexible')}</script>`
+  - `<link href="./meta.html?__inline">`
+  - `<script type="text/javascript" src="../../node_modules/lib-flexible/flexible.js?__inline"></script>`
+- CSS 内联
+  1. 借助 `style-loader`
+  2. 借助 `html-inline-css-webpack-plugin`
+
+相关代码
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              insertAt: 'top', // 样式插入到 <head>
+              singleton: true, // 将所有的style标签合并成一个
+            }
+          },
+          "css-loader",
+          "sass-loader"
+        ],
+      },
+    ]
+  },
+
+  // css内联 或使用 plugin
+  plugins: [].concat(new HTMLInlineCSSWebpackPlugin()),
+};
+```
+
+#### 多页面应用（MPA）概念
+
+每⼀次⻚⾯跳转的时候，后台服务器都会给返回⼀个新的 html ⽂档，这种类型的⽹站也就是多⻚⽹站，也叫做多⻚应⽤。
+
+- 特点：每个页面对应一个 entry，一个 html-webpack-plugin。
+- 缺点：每次新增或删除⻚⾯需要改 webpack 配置
+
+思考：如何实现多页面打包通用方案
+
+利用 glob.sync, 动态获取 entry 并设置 html-webpack-plugin
+
+相关代码
+
+```js
+{
+  entry: glob.sync(path.join(__dirname, './src/pages/*/index.js')),
+}
+```
+
+### 使用 sourceMap
+
+作⽤：通过 source map 定位到源代码
+
+source map 阮一峰[科普⽂](http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html)
+
+#### sourceMap 都有哪些配置？应该怎么用？
+
+ 关键字      | 描述
+ ---------- | ---
+ eval       | 使用 eval 包裹模块代码
  source map | 产生 .map 文件
- cheap | 不包含列信息
- inline | 将 .map 作为 DataURI 嵌入，不单独生成 .map 文件
- module | 包含 loader 的 sourceMap
+ cheap      | 不包含列信息
+ inline     | 将 .map 作为 DataURI 嵌入，不单独生成 .map 文件
+ module     | 包含 loader 的 sourceMap
 
 #### sourceMap 有哪些配置类型？
 
@@ -367,47 +656,77 @@ module.exports = {
 
 #### 应该怎么选择使用？
 
-我们生产环境，可以使用 source-map, 但对 .map 文件需要处理，不能直接泄露源码到生产上
+我们生产环境，可以使用 source map, 但对 .map 文件需要处理，不能直接泄露源码到生产上。
 
-## webpack 进阶
+线上排查问题的时候可以将 sourcemap 上传到错误监控系统
 
-#### 自动清理构建目录
+### 提取页面公共资源
 
-- `rm -rf ./dist`
-- `rimraf ./dist`
-- 使用插件 `clean-webpack-plugin`
-  - 默认删除 output 指定的输出目录
+- 基础库分离
+  - 思路: 将 react、react-dom 基础包通过 cdn 引⼊，不打⼊ bundle 中
+  - 方法: 使⽤ html-webpackexternals-plugin
+- 利⽤ SplitChunksPlugin 进⾏公共脚本分离
+  - Webpack4 内置，替代CommonsChunkPlugin插件
+    - async   异步引⼊的库进⾏分离(默认)
+    - initial 同步引⼊的库进⾏分离
+    - all     所有引⼊的库进⾏分离(推荐)
+  - 利⽤ SplitChunksPlugin 分离基础包
+    - test: 匹配出需要分离的包
+  - 利⽤ SplitChunksPlugin 分离⻚⾯公共⽂件
+    - minChunks: 设置最⼩引⽤次数为2次
+    - minuSize: 分离的包体积的⼤⼩
 
-#### 预处理器
+```js
 
-- `autoprefixer` 自动补全 csss3 前缀
-- px2rem-loader
-  - lib-flexible
-- px2vw
+```
 
-#### 资源内联的意义
+### tree shaking(摇树优化)
 
-- 代码层面
-  - 页面框架的初始化脚本
-  - 上报相关打点
-  - css 内联避免页面闪动
-- 请求层面：减少 HTTP 网络请求数
-  - 小图片或者字体内联（url-loader）
+概念：1 个模块可能有多个⽅法，只要其中的某个⽅法使⽤到了，则整个⽂件都会被打到 bundle ⾥⾯去，tree shaking 就是只把⽤到的⽅法打⼊ bundle ，没⽤到的⽅法会在 uglify 阶段被擦除掉。
 
-实现
+- 使⽤：webpack 默认⽀持，在 .babelrc ⾥设置 modules: false 即可
+  - production mode的情况下默认开启
+- 要求：必须是 ES6 的语法，CJS 的⽅式不⽀持
 
-- HTML 和 JS 内联
-- CSS 内联
-  - 借助 style-loader
-  - html-inline-css-webpack-plugin
+#### DCE (Dead code elimination)
 
-#### 多页面应用（MPA）概念
+- 代码不会被执行，不可到达
+- 代码执行的结果不会被用到
+- 代码只会影响死变量（只写不读）
 
-思路：每个页面对应一个 entry，一个 html-webpack-plugin
+#### Tree-shaking 原理
 
-实现多页面打包通用方案
+- 利用 ES6 模块的特点：
+  - 只能作为模块顶层的语句出现
+  - import 的模块名只能是字符串常量
+  - import binding 是 immutable 的
+- 代码擦除: uglify 阶段删除无用代码
 
-利用 glob.sync 通过动态获取 entry 并设置 html-webpack-plugin
+### scope hoisting
+
+现象：构建后的代码存在⼤量闭包代码
+
+- 会导致什么问题？
+  - ⼤量作⽤域包裹代码，导致体积增⼤（模块越多越明显）
+  - 运⾏代码时创建的函数作⽤域变多，内存开销变⼤
+
+- 模块转换分析，结论：
+  - 被 webpack 转换后的模块会带上⼀层包裹
+  - import 会被转换成 __webpack_require
+- 分析
+  - webpack 打包出来的是⼀个 IIFE (匿名闭包)
+  - modules 是⼀个数组，每⼀项是⼀个模块初始化函数
+  - __webpack_require ⽤来加载模块，返回 module.exports
+  - 通过 WEBPACK_REQUIRE_METHOD(0) 启动程序
+
+#### scope hoisting 原理
+
+原理: 将所有模块的代码按照引⽤顺序放在⼀个函数作⽤域⾥，然后适当的重命名⼀些变量以防⽌变量名冲突
+
+对⽐: 通过 scope hoisting 可以减少函数声明代码和内存开销
+
+- webpack mode 为 production 默认开启
+- 必须是 ES6 语法，CJS 不⽀持
 
 ### 代码分割的意义
 
@@ -424,8 +743,7 @@ webpack 有一个功能就是将你的代码库分割成 chunks（语块），�
 - CommonJS: `require.ensure`
 - ES6: 动态 import （需要 babel 转换 `@babel/plugin-syntax-dynamic-import`）
 
-原理，webpack 通过 JSONP 来实现动态加载脚本
-
+原理: webpack 通过 JSONP 来实现动态加载脚本
 
 ## 编写可维护的 webpack 构建配置
 
