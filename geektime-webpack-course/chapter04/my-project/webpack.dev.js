@@ -1,4 +1,4 @@
-'use strict';
+
 
 const glob = require('glob');
 const path = require('path');
@@ -33,47 +33,47 @@ const setMPA = () => {
             preserveLineBreaks: false,
             minifyCSS: true,
             minifyJS: true,
-            removeComments: false
-          }
-        })
+            removeComments: false,
+          },
+        }),
       );
     });
 
   return {
     entry,
-    htmlWebpackPlugins
-  }
-}
+    htmlWebpackPlugins,
+  };
+};
 
 const { entry, htmlWebpackPlugins } = setMPA();
 
 module.exports = {
-  entry: entry,
+  entry,
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].js',
   },
   mode: 'development',
   module: {
     rules: [
       {
         test: /.js$/,
-        use: 'babel-loader'
+        use: 'babel-loader',
       },
       {
         test: /.css$/,
         use: [
           'style-loader',
-          'css-loader'
-        ]
+          'css-loader',
+        ],
       },
       {
         test: /.less$/,
         use: [
           'style-loader',
           'css-loader',
-          'less-loader'
-        ]
+          'less-loader',
+        ],
       },
       {
         test: /.(png|jpg|gif|jpeg)$/,
@@ -81,26 +81,26 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              limit: 10240
-            }
-          }
-        ]
+              limit: 10240,
+            },
+          },
+        ],
       },
       {
         test: /.(woff|woff2|eot|ttf|otf)$/,
-        use: 'file-loader'
-      }
-    ]
+        use: 'file-loader',
+      },
+    ],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new CleanWebpackPlugin(),
-    new FriendlyErrorsWebpackPlugin()
+    new FriendlyErrorsWebpackPlugin(),
   ].concat(htmlWebpackPlugins),
   devServer: {
     contentBase: './dist',
     hot: true,
-    stats: 'errors-only'
+    stats: 'errors-only',
   },
-  devtool: 'cheap-source-map'
+  devtool: 'cheap-source-map',
 };

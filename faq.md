@@ -98,7 +98,7 @@
 
 ant + YUI Tool -> grunt -> gulp/fis3 -> rollup/webpack/parcel
 
--> esbuild,swc,vite
+-> esbuild, swc, vite
 
 各有什么特点
 
@@ -664,20 +664,67 @@ source map 阮一峰[科普⽂](http://www.ruanyifeng.com/blog/2013/01/javascrip
 
 - 基础库分离
   - 思路: 将 react、react-dom 基础包通过 cdn 引⼊，不打⼊ bundle 中
-  - 方法: 使⽤ html-webpackexternals-plugin
-- 利⽤ SplitChunksPlugin 进⾏公共脚本分离
-  - Webpack4 内置，替代CommonsChunkPlugin插件
-    - async   异步引⼊的库进⾏分离(默认)
-    - initial 同步引⼊的库进⾏分离
-    - all     所有引⼊的库进⾏分离(推荐)
-  - 利⽤ SplitChunksPlugin 分离基础包
+  - 方法: 使⽤ `html-webpack-externals-plugin`
+- 利⽤ `SplitChunksPlugin` 进⾏公共脚本分离
+  - Webpack4 内置，替代 `CommonsChunkPlugin` 插件
+    - `async`   异步引⼊的库进⾏分离(默认)
+    - `initial` 同步引⼊的库进⾏分离
+    - `all`     所有引⼊的库进⾏分离(推荐)
+  - 利⽤ `SplitChunksPlugin` 分离基础包
     - test: 匹配出需要分离的包
-  - 利⽤ SplitChunksPlugin 分离⻚⾯公共⽂件
+  - 利⽤ `SplitChunksPlugin` 分离⻚⾯公共⽂件
     - minChunks: 设置最⼩引⽤次数为2次
     - minuSize: 分离的包体积的⼤⼩
 
 ```js
-
+module.exports = {
+  plugins: [
+    new HtmlWebpackExternalsPlugin({
+      externals: [
+        {
+          module: 'react',
+          entry: 'https://11.url.cn/now/lib/16.2.0/react.min.js',
+          global: 'React',
+        },
+        {
+          module: 'react-dom',
+          entry: 'https://11.url.cn/now/lib/16.2.0/react-dom.min.js',
+          global: 'ReactDOM',
+        },
+      ]
+    }),
+  ],
+  optimization: {
+    // 此项配置，更详细参考 [webpack-splitchunks](./webpack4/webpack-splitchunks/README.md)
+    splitChunks: {
+      chunks: 'async',
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      name: true,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        commons1: {
+          test: /(react|react-dom)/,
+          name: 'commons1',
+          chunks: 'all'
+        },
+        commons2: {
+          name: 'commons2',
+          chunks: 'all',
+          minChunks: 2,
+          minSize: 0,
+        },
+      }
+    }
+  }
+};
 ```
 
 ### tree shaking(摇树优化)
@@ -702,17 +749,53 @@ source map 阮一峰[科普⽂](http://www.ruanyifeng.com/blog/2013/01/javascrip
   - import binding 是 immutable 的
 - 代码擦除: uglify 阶段删除无用代码
 
-### scope hoisting
+### 关于 scope hoisting
 
-现象：构建后的代码存在⼤量闭包代码
+问题现象: 构建后的代码存在⼤量闭包代码
 
 - 会导致什么问题？
   - ⼤量作⽤域包裹代码，导致体积增⼤（模块越多越明显）
   - 运⾏代码时创建的函数作⽤域变多，内存开销变⼤
 
-- 模块转换分析，结论：
+这里通过模块转换分析，可以了解详情
+
+Webpack 用自己的方式支持了 ES6 Module 规范
+
+- 实现 exports 和 require
+- 自动加载入口模块
+- 控制缓存模块
+
+```js
+// main.js
+import utils from './utils';
+
+// 打包后，输出如下
+// 详细参考 [output-analysis](./webpack4/output-analysis/README.md)
+
+// webpack 模块化通过自执行函数 IIFE 启动代码，把所有模块当做参数传入
+// 然后使用 webpack 实现的 require 和 exports 实现模块化
+// 对于代码分割，webpack自定义了一个函数以jsonp的方式加载js文件
+(function (modules){
+  // webpackBootstrap
+  // ...
+})({
+  // 这里每一个模块函数都是被 webpack 封装处理的，为了实现模块化效果
+  // 这里实现符合commonjs的规范 function(module, module.exports, require)
+  "./src/main.js": (function(module, exports, require){
+    // 模块主体
+  }),
+  "./src/utils.js": (function(module, exports, require){
+    // 模块主体
+  }),
+});
+```
+
+- 结论
   - 被 webpack 转换后的模块会带上⼀层包裹
   - import 会被转换成 __webpack_require
+
+进一步分析 webpack 的模块机制
+
 - 分析
   - webpack 打包出来的是⼀个 IIFE (匿名闭包)
   - modules 是⼀个数组，每⼀项是⼀个模块初始化函数
@@ -725,8 +808,15 @@ source map 阮一峰[科普⽂](http://www.ruanyifeng.com/blog/2013/01/javascrip
 
 对⽐: 通过 scope hoisting 可以减少函数声明代码和内存开销
 
-- webpack mode 为 production 默认开启
-- 必须是 ES6 语法，CJS 不⽀持
+- 使用
+  - webpack mode 为 production 默认开启
+  - 必须是 ES6 语法，CJS 不⽀持
+
+示例代码
+
+```js
+
+```
 
 ### 代码分割的意义
 
@@ -740,29 +830,104 @@ webpack 有一个功能就是将你的代码库分割成 chunks（语块），�
 
 ### 懒加载 JS 脚本的方式
 
+如何使用动态 import？
+
 - CommonJS: `require.ensure`
 - ES6: 动态 import （需要 babel 转换 `@babel/plugin-syntax-dynamic-import`）
+  - import().then ?
 
 原理: webpack 通过 JSONP 来实现动态加载脚本
 
-## 编写可维护的 webpack 构建配置
+代码分割的效果
 
-### 构建配置抽离成 npm 包
+输出命名规则？
 
-- webpack-builder
+### 代码规范的必要性
 
-### 项目持续集成怎么做？都包含什么哪些检查项，整个过程怎么流转？
+可以规范代码，检测错误
 
-- 冒烟测试
-- 单元测试
+行业内优秀的规范实践
 
-#### 持续集成的目的是什么？
+- alloyteam团队 [eslint-config-alloy](https://github.com/AlloyTeam/eslint-config-alloy)
+- ivweb 团队：[eslint-config-ivweb](https://github.com/feflow/eslint-config-ivweb)
+
+制定团队的 ESLint 规范
+
+- 不重复造轮子，基于业界优秀的规范实践配置并改进
+- 能够帮助发现代码错误的规则，全部开启
+- 帮助保持团队的代码风格统一，而不是限制开发体验
+
+规范如何执行落地？
+
+- 和 CI/CD 系统集成
+- 和 webpack 集成
+
+方案一: webpack 与 CI/CD 集成
+
+![ci-cd](./docs/img/ci-cd_lint-pipline.png)
+
+本地开发阶段增加 precommit 钩⼦
+
+通过 husky 配置 git hooks 钩子，通过 lint-staged 增量检查修改的⽂件
+
+```js
+"scripts": {
+  "precommit": "lint-staged"
+},
+"lint-staged": {
+  "linters": {
+    "*.{js,scss}": ["eslint --fix", "git add"]
+  }
+},
+```
+
+方案二: webpack 与 ESLint 集成
+
+使⽤ eslint-loader，构建时检查 JS 规范
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          "babel-loader",
+          "eslint-loader", // 构建时检查
+        ]
+      }
+    ]
+  }
+};
+```
+
+#### webpack 打包库和组件
+
+直接参考示例 [large-number](./geektime-webpack-course/chapter03/large-number/webpack.config.js)
+
+#### 服务端渲染 SSR
 
 
-#### 我们应该做哪些？
+#### 如何优化命令行的构建日志
+
+#### 如何判断构建是否成功？
+
+#### 如何主动捕获并处理构建错误？
 
 
-#### 整个过程是怎样的？
+
+
+## 编写可维护的 webpack 构建配置？
+
+1. 构建配置抽离 npm 包
+   1. webpack-builder
+2. 持续集成（优点:快速发现错误，防止分支大幅度偏离主干）
+   1. 规范检查接入 (lint pipline)
+   2. 冒烟测试接入 (smoke testing)
+   3. 单元测试接入 (unit)
+   4. Git 规范和 Changelog 生成
+   5. 语义化版本
 
 ## webpack 构建速度和体积优化策略？
 
@@ -776,6 +941,7 @@ webpack 有一个功能就是将你的代码库分割成 chunks（语块），�
 - 体积分析: `webpack-bundle-analyzer`
   - 依赖的第三方模块文件大小
   - 业务里面的组件代码大小
+  - 构建完成后会在 8888 端口展示大小
 
 #### 怎么优化？为什么？
 
@@ -826,21 +992,23 @@ webpack 有一个功能就是将你的代码库分割成 chunks（语块），�
     - `mode` 为 `production` 时默认开启
   - 要求：必须是 ES6 的语法，CJS 的方式不支持
 - 无用的 CSS 如何删除掉？
-  - `PurifyCSS`
-  - `uncss`
-  - `purgecss-webpack-plugin`
+  - `PurifyCSS`: 遍历代码，识别已经用到的 CSS class
+  - `uncss`: HTML 需要通过 jsdom 加载，所有的样式通过PostCSS解析，通过 document.querySelector 来识别在 html 文件里面不存在的选择器
+  - [`purgecss-webpack-plugin`](https://github.com/FullHuman/purgecss-webpack-plugin)
+    - 已经迁移到 PurgeCSS 仓库, 对应 [packages/purgecss-webpack-plugin](https://github.com/FullHuman/purgecss/tree/master/packages/purgecss-webpack-plugin)
   - 和 `mini-css-extract-plugin` 配合使用
 - 构建体积优化：动态 Polyfill
+  - 官方 `polyfill.io`
 
+## 通过源码掌握 webpack 打包原理
 
-### splitChunks 怎么配置的？分包策略有哪些？为什么？
-
-#### 有哪些配置项？
-
-
-#### 分包策略有哪些？都解决什么问题？
-
-
+- webpack 命令行
+  - 入口文件
+  - 启动逻辑
+  - webpack-cli 做的事情
+  - 从 NON_COMPILATION_CMD 分析出不需要编译的命令
+  - NON_COMPILATION_ARGS 的内容
+    - `['init', 'migrate', 'add', 'remove', 'serve', 'generate-loader', 'generate-plugin', 'info']`
 
 ### webpack 的本质？打包原理是什么？tapable 是什么？
 
@@ -885,11 +1053,17 @@ loader 本身是一个函数，接受源文件作为参数，返回转换的结�
 #### vite 为了实现 bundleless 做了哪些工作？
 
 
-## 扩展
+## 解决方案回顾
 
 - 多页面打包通用方案
 - 手写：大数相加实现
-- 构建配置抽离 npm 包
-- 冒烟测试（smoke testing）
-- 单元测试
+- SSR 实现方案
+- 打包优化，体积优化
 - 拆包方案
+- 构建配置抽离 npm 包
+- CI/CD 流程集成
+  1. 规范检查接入 (lint pipline)
+  2. 冒烟测试接入 (smoke testing)
+  3. 单元测试接入 (unit)
+  4. Git 规范和 Changelog 生成
+  5. 语义化版本

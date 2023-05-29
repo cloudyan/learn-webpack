@@ -37,7 +37,7 @@ Webpack 用自己的方式支持了 ES6 Module 规范
 });
 ```
 
-具体实现参看 [webpackBootstrap](./code/1.webpackBootstrap.js)，仔细观察下 require 的实现，对 commonjs 以及 es 模块的处理
+具体实现参看 [webpackBootstrap](./webpack4/code/1.webpackBootstrap.js)，仔细观察下 require 的实现，对 commonjs 以及 es 模块的处理
 
 这里把 es模块中的 `export default`和`export` 都转换成了类似于commonjs的 `exports.xxx`，所有的`export`对象都是`__webpack_exports__`的属性
 

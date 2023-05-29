@@ -70,3 +70,4 @@ stats.json
 # temp
 webpack-loader
 temp
+.DS_Store

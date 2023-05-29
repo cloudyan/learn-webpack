@@ -1,4 +1,4 @@
-'use strict';
+
 
 const TerserPlugin = require('terser-webpack-plugin');
 const HappyPack = require('happypack');
@@ -45,32 +45,32 @@ const setMPA = () => {
             preserveLineBreaks: false,
             minifyCSS: true,
             minifyJS: true,
-            removeComments: false
-          }
-        })
+            removeComments: false,
+          },
+        }),
       );
     });
 
   return {
     entry,
-    htmlWebpackPlugins
-  }
-}
+    htmlWebpackPlugins,
+  };
+};
 
 const { entry, htmlWebpackPlugins } = setMPA();
 
 module.exports = {
-  entry: entry,
+  entry,
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name]_[chunkhash:8].js'
+    filename: '[name]_[chunkhash:8].js',
   },
   mode: 'production',
   module: {
     rules: [
       {
         test: /.js$/,
-        //include: path.resolve('src'),
+        // include: path.resolve('src'),
         use: [
           // {
           //   loader: 'thread-loader',
@@ -80,16 +80,16 @@ module.exports = {
           // },
           // 'cache-loader',
           // 'babel-loader',
-          'happypack/loader'
+          'happypack/loader',
           // 'eslint-loader'
-        ]
+        ],
       },
       {
         test: /.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
+          'css-loader',
+        ],
       },
       {
         test: /.less$/,
@@ -102,19 +102,19 @@ module.exports = {
             options: {
               plugins: () => [
                 require('autoprefixer')({
-                  browsers: ['last 2 version', '>1%', 'ios 7']
-                })
-              ]
-            }
+                  overrideBrowserslist: ['last 2 version', '>1%', 'ios 7'],
+                }),
+              ],
+            },
           },
           {
             loader: 'px2rem-loader',
             options: {
               remUnit: 75,
-              remPrecision: 8
-            }
-          }
-        ]
+              remPrecision: 8,
+            },
+          },
+        ],
       },
       {
         test: /.(png|jpg|gif|jpeg)$/,
@@ -122,10 +122,10 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name]_[hash:8].[ext]'
-            }
-          }
-        ]
+              name: '[name]_[hash:8].[ext]',
+            },
+          },
+        ],
       },
       {
         test: /.(woff|woff2|eot|ttf|otf)$/,
@@ -133,20 +133,20 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name]_[hash:8][ext]'
-            }
-          }
-        ]
-      }
-    ]
+              name: '[name]_[hash:8][ext]',
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name]_[contenthash:8].css'
+      filename: '[name]_[contenthash:8].css',
     }),
     new OptimizeCSSAssetsPlugin({
       assetNameRegExp: /\.css$/g,
-      cssProcessor: require('cssnano')
+      cssProcessor: require('cssnano'),
     }),
     new CleanWebpackPlugin(),
     // new HtmlWebpackExternalsPlugin({
@@ -164,24 +164,23 @@ module.exports = {
     //   ]
     // }),
     new FriendlyErrorsWebpackPlugin(),
-    function() {
+    function () {
       this.hooks.done.tap('done', (stats) => {
-        if (stats.compilation.errors && stats.compilation.errors.length && process.argv.indexOf('--watch') == -1)
-        {
+        if (stats.compilation.errors && stats.compilation.errors.length && process.argv.indexOf('--watch') == -1) {
           console.log('build error');
           process.exit(1);
         }
-      })
+      });
     },
     // new BundleAnalyzerPlugin(),
     new HappyPack({
       // 3) re-add the loaders you replaced above in #1:
-      loaders: [ 'babel-loader?cacheDirectory=true' ]
+      loaders: ['babel-loader?cacheDirectory=true'],
     }),
     // new webpack.DllReferencePlugin({
     //   manifest: require('./build/library/library.json')
     // }),
-    new HardSourceWebpackPlugin()
+    new HardSourceWebpackPlugin(),
   ].concat(htmlWebpackPlugins),
   // optimization: {
   //   splitChunks: {
