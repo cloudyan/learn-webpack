@@ -1,0 +1,3 @@
+[submodule "shared/module-federation-examples"]
+	path = shared/module-federation-examples
+	url = https://github.com/module-federation/module-federation-examples.git
